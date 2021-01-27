@@ -1,0 +1,15 @@
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\bin\Debug\PathFindVisualizer.exe.config
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\bin\Debug\PathFindVisualizer.exe
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\bin\Debug\PathFindVisualizer.pdb
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.csprojAssemblyReference.cache
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\MainWindow.g.cs
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\App.g.cs
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer_MarkupCompile.cache
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer_MarkupCompile.lref
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\MainWindow.baml
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.g.resources
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.Properties.Resources.resources
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.csproj.GenerateResource.cache
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.csproj.CoreCompileInputs.cache
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.exe
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.pdb
