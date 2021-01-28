@@ -30,13 +30,8 @@ namespace PathFindVisualizer
         public MainWindow()
         {
             InitializeComponent();
-
+            App.Current.Properties["Speed"] = 0;
             PopulateGrid();
-        }
-
-        private void DisplayChoices()
-        {
-            
         }
 
         private void PopulateGrid()
@@ -181,6 +176,7 @@ namespace PathFindVisualizer
                 return;
             }
             List<Square> path;
+
             try
             {
                 switch(AlgSelect.SelectedIndex)
@@ -193,6 +189,9 @@ namespace PathFindVisualizer
                         break;
                     case 2:
                         path = await GreedyBFS.GetPath(Field.current);
+                        break;
+                    case 3:
+                        path = await AStar.GetPath(Field.current);
                         break;
                     default:
                         MessageBox.Show("Error selecting algorithm.");
@@ -213,7 +212,9 @@ namespace PathFindVisualizer
                 }
                 else path[i].ColorPath();
                 UpdateUI();
-                Thread.Sleep(100);
+                int Speed;
+                int.TryParse(App.Current.Properties["Speed"].ToString(), out Speed);
+                Thread.Sleep(50 * (Speed + 1));
             }
         }
 
@@ -257,6 +258,11 @@ namespace PathFindVisualizer
                 if(current != Field.current.start && current != Field.current.goal && !current.isWall)
                     rect.Fill = System.Windows.Media.Brushes.Gray;
             }
+        }
+
+        private void SpeedSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            App.Current.Properties["Speed"] = SpeedSelect.SelectedIndex;
         }
     }
 }

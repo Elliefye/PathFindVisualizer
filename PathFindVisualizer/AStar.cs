@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 namespace PathFindVisualizer
 {
-    public static class Dijkstra
+    public static class AStar
     {
         public static async Task<List<Square>> GetPath(Field field)
         {
@@ -36,11 +36,13 @@ namespace PathFindVisualizer
                     {
                         continue;
                     }
-                    else if(!CostSoFar.ContainsKey(current.neighbors[i]) || newCost < CostSoFar[current.neighbors[i]])
+                    else if (!CostSoFar.ContainsKey(current.neighbors[i]) || newCost < CostSoFar[current.neighbors[i]])
                     {
                         CostSoFar[current.neighbors[i]] = newCost;
+                        newCost = newCost + Field.MeasureDistance(field.goal, current.neighbors[i]);
                         ToCheck.Enqueue(current.neighbors[i], newCost);
-                        PreviousMoves.Add(current.neighbors[i], current);
+                        if (!PreviousMoves.ContainsKey(current.neighbors[i]))
+                            PreviousMoves.Add(current.neighbors[i], current);
                     }
                 }
                 if (current != field.start) //color visited squares

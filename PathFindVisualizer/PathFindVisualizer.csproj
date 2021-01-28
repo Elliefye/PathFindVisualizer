@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AStar.cs" />
     <Compile Include="BFS.cs" />
     <Compile Include="Dijkstra.cs" />
     <Compile Include="GreedyBFS.cs" />
