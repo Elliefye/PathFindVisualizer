@@ -246,5 +246,17 @@ namespace PathFindVisualizer
             Dispatcher.PushFrame(frame);
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
         }
+
+        private void ResetBtn_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (object child in PathGrid.Children)
+            {
+                Rectangle rect = (Rectangle)child;
+                Square current = Field.current.field[Field.GetCoordinates(rect.Name).Item1, Field.GetCoordinates(rect.Name).Item2];
+
+                if(current != Field.current.start && current != Field.current.goal && !current.isWall)
+                    rect.Fill = System.Windows.Media.Brushes.Gray;
+            }
+        }
     }
 }
