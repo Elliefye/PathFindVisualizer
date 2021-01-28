@@ -10,11 +10,12 @@ using System.Windows.Threading;
 
 namespace PathFindVisualizer
 {
-    public class Square
+    public class Square :IComparable<Square>
     {
         public int x { get; set; }
         public int y { get; set; }
         public bool isWall = false;
+        public int weight = 1;
         private Rectangle uiRef;
         public List<Square> neighbors = new List<Square>();
 
@@ -60,6 +61,27 @@ namespace PathFindVisualizer
         public void ColorWall()
         {
             uiRef.Fill = System.Windows.Media.Brushes.Black;
+        }
+
+        public override string ToString()
+        {
+            return "Cube with coordinates: (" + x + ", " + y + ") and weight " + weight;
+        }
+
+        public int CompareTo(Square other)
+        {
+            if (this.weight < other.weight)
+            {
+                return -1;
+            }
+            else if (this.weight > other.weight)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

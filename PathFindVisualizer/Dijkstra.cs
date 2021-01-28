@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
 namespace PathFindVisualizer
 {
-    public static class BFS
+    public static class Dijkstra
     {
         public static async Task<List<Square>> GetPath(Field field)
         {
-            Queue<Square> ToCheck = new Queue<Square>();
-            ToCheck.Enqueue(field.start);
+            PriorityQueue<Square> ToCheck = new PriorityQueue<Square>();
+            ToCheck.Enqueue(field.start, 0);
             Dictionary<Square, Square> PreviousMoves = new Dictionary<Square, Square>();
+            Dictionary<Square, int> CostSoFar = new Dictionary<Square, int>();
             PreviousMoves.Add(field.start, null);
+            CostSoFar[field.start] = 0;
             Square current;
 
-            while (ToCheck.Count > 0)
+            while (ToCheck.Count() > 0)
             {
                 current = ToCheck.Dequeue();
 
@@ -27,13 +31,15 @@ namespace PathFindVisualizer
 
                 for (int i = 0; i < current.neighbors.Count; i++)
                 {
-                    if (current.neighbors[i].isWall || PreviousMoves.ContainsKey(current.neighbors[i]))
+                    int newCost = CostSoFar[current] + current.neighbors[i].weight;
+                    if (current.neighbors[i].isWall)
                     {
                         continue;
                     }
-                    else if (!ToCheck.Contains(current.neighbors[i]))
+                    else if(!CostSoFar.ContainsKey(current.neighbors[i]) || newCost < CostSoFar[current.neighbors[i]])
                     {
-                        ToCheck.Enqueue(current.neighbors[i]);
+                        CostSoFar[current.neighbors[i]] = newCost;
+                        ToCheck.Enqueue(current.neighbors[i], newCost);
                         PreviousMoves.Add(current.neighbors[i], current);
                     }
                 }
