@@ -103,5 +103,10 @@ namespace PathFindVisualizer
             int y = int.Parse(name.Substring(3, 2));
             return (x, y);
         }
+
+        public static int MeasureDistance(Square a, Square b)
+        {
+            return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
+        }
     }
 }

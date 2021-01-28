@@ -34,6 +34,11 @@ namespace PathFindVisualizer
             PopulateGrid();
         }
 
+        private void DisplayChoices()
+        {
+            
+        }
+
         private void PopulateGrid()
         {
             int width = 10;
@@ -172,25 +177,27 @@ namespace PathFindVisualizer
         {
             if (Field.current.start == null || Field.current.goal == null)
             {
-                //MessageBox.Show("Select start and goal nodes!");
-                PriorityQueue<Square>  pq = new PriorityQueue<Square>();
-                Square one = new Square(null, 1, 1);
-                Square two = new Square(null, 2, 2);
-                Square three = new Square(null, 3, 3);
-                pq.Enqueue(one, 2);
-                pq.Enqueue(two, 1);
-                pq.Enqueue(three, 3);
-                MessageBox.Show(pq.ToString());
-                MessageBox.Show(pq.Dequeue().ToString());
-                MessageBox.Show(pq.Dequeue().ToString());
-                MessageBox.Show(pq.Dequeue().ToString());
+                MessageBox.Show("Select start and goal nodes!");
                 return;
             }
-            List<Square> path;           
+            List<Square> path;
             try
             {
-                //path = await BFS.GetPath(Field.current);
-                path = await Dijkstra.GetPath(Field.current);
+                switch(AlgSelect.SelectedIndex)
+                {
+                    case 0:
+                        path = await BFS.GetPath(Field.current);
+                        break;
+                    case 1:
+                        path = await Dijkstra.GetPath(Field.current);
+                        break;
+                    case 2:
+                        path = await GreedyBFS.GetPath(Field.current);
+                        break;
+                    default:
+                        MessageBox.Show("Error selecting algorithm.");
+                        return;
+                }
             }
             catch
             {

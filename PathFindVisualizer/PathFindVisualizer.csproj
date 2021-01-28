@@ -57,6 +57,8 @@
     </ApplicationDefinition>
     <Compile Include="BFS.cs" />
     <Compile Include="Dijkstra.cs" />
+    <Compile Include="GreedyBFS.cs" />
+    <Compile Include="PF.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Square.cs" />
     <Page Include="MainWindow.xaml">
