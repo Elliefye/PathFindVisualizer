@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PathFindVisualizer
 {
@@ -44,12 +47,19 @@ namespace PathFindVisualizer
 
         public void ColorChecked()
         {
+            //Action a = () => uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
+            //Dispatcher.Invoke(a);
             uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
         }
 
         public void ColorPath()
         {
             uiRef.Fill = System.Windows.Media.Brushes.Lavender;
+        }
+
+        public void ColorWall()
+        {
+            uiRef.Fill = System.Windows.Media.Brushes.Black;
         }
     }
 }

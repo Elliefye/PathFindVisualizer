@@ -38,6 +38,22 @@ namespace PathFindVisualizer
             goal.ColorGoal();
         }
 
+        public void SetWall(int x, int y)
+        {
+            field[x, y].isWall = true;
+        }
+
+        public void ClearWalls()
+        {
+            for (int i = 0; i < field.GetLength(0); i++)
+            {
+                for (int j = 0; j < field.GetLength(1); j++)
+                {
+                    field[i, j].isWall = false;
+                }
+            }
+        }
+
         public void AddNeighbors()
         {
             for(int i = 0; i < field.GetLength(0); i++)

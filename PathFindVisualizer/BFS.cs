@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace PathFindVisualizer
 {
     public static class BFS
     {
-        public static List<Square> GetPath(Field field)
+        public static async Task<List<Square>> GetPath(Field field)
         {
             Queue<Square> ToCheck = new Queue<Square>();
             ToCheck.Enqueue(field.start);
+            List<Square> Visited = new List<Square>();
             Dictionary<Square, Square> PreviousMoves = new Dictionary<Square, Square>();
             PreviousMoves.Add(field.start, null);
             Square current;
@@ -21,6 +24,7 @@ namespace PathFindVisualizer
             while (ToCheck.Count > 0)
             {
                 current = ToCheck.Dequeue();
+                Visited.Add(current);
 
                 if (current.Equals(field.goal))
                 {
@@ -39,7 +43,11 @@ namespace PathFindVisualizer
                         PreviousMoves.Add(current.neighbors[i], current);
                     }
                 }
-                current.ColorChecked();
+                if(current != field.start) //color visited squares
+                {
+                    Application.Current.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => current.ColorChecked()));
+                    await Task.Delay(100);
+                }
             }
 
             List<Square> Path = new List<Square>();
