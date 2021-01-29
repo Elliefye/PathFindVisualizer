@@ -14,9 +14,9 @@ namespace PathFindVisualizer
 
         public static Field current = null;
 
-        public Field(int size)
+        public Field(int rows, int cols)
         {
-            field = new Square[size, size];
+            field = new Square[rows, cols];
         }
 
         public void AddSquare(Square s)

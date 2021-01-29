@@ -36,18 +36,33 @@ namespace PathFindVisualizer
 
         private void PopulateGrid()
         {
-            int width = 10;
-            Field.current = new Field(width);
+            int RowNo = 10;
+            int ColNo = 23;
 
-            for (int i = 0; i <= width; i++)
+            if (PathGrid.ActualWidth != 0 && PathGrid.Width != 0)
             {
-                PathGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                RowNo = (int)PathGrid.ActualHeight / 30;
+                ColNo = (int)PathGrid.ActualWidth / 30;
+                PathGrid.RowDefinitions.Clear();
+                PathGrid.ColumnDefinitions.Clear();
+                PathGrid.Children.Clear();
+            }
+
+            Field.current = new Field(RowNo, ColNo);
+
+            for (int i = 0; i <= RowNo; i++)
+            {
                 PathGrid.RowDefinitions.Add(new RowDefinition());
             }
 
-            for (int j = 0; j < width; j++) //rows
+            for (int j = 0; j < ColNo; j++)
             {
-                for (int k = 0; k < width; k++) //columns
+                PathGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            for (int j = 0; j < RowNo; j++) //rows (height)
+            {
+                for (int k = 0; k < ColNo; k++) //columns (width)
                 {
                     Rectangle square = new Rectangle();
 
@@ -67,7 +82,6 @@ namespace PathFindVisualizer
                     Grid.SetColumn(square, k);
                     square.Fill = System.Windows.Media.Brushes.Gray;
                     square.MouseLeftButtonUp += new MouseButtonEventHandler((s, e) => Square_OnMouseLeftButtonUp(s, e));
-                    square.MouseLeftButtonDown += new MouseButtonEventHandler((s, e) => Square_OnMouseLeftButtonDown(s, e));
                     square.MouseMove += new MouseEventHandler((s, e) => Square_OnMouseMove(s, e));
                     square.DragEnter += new DragEventHandler((s, e) => Square_DragEnter(s, e));
                     PathGrid.Children.Add(square);
@@ -77,69 +91,47 @@ namespace PathFindVisualizer
             Field.current.AddNeighbors();
         }
 
+        //click
         private void Square_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Rectangle uiSquare = (Rectangle)sender;
+            var coord = Field.GetCoordinates(uiSquare.Name);
 
-            if(m_drawingWalls)
+            if (m_drawingWalls)
             {
                 //goal or start can't be a wall
-                if(Field.current.goal != Field.current.field[Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2] &&
-                    Field.current.start != Field.current.field[Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2])
+                if(Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                    Field.current.start != Field.current.field[coord.Item1, coord.Item2])
                 {
-                    Field.current.SetWall(Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2);
+                    Field.current.SetWall(coord.Item1, coord.Item2);
                     uiSquare.Fill = System.Windows.Media.Brushes.Black;
                 }
             }
             else if(m_choosingStart)
             {
-                Field.current.SetStart(Field.GetCoordinates(uiSquare.Name).Item1, 
-                    Field.GetCoordinates(uiSquare.Name).Item2);
+                Field.current.SetStart(coord.Item1, coord.Item2);
                 m_choosingStart = false;
                 m_choosingGoal = true;
             }
             else if(m_choosingGoal)
             {
-                Field.current.SetGoal(Field.GetCoordinates(uiSquare.Name).Item1, 
-                    Field.GetCoordinates(uiSquare.Name).Item2);
+                Field.current.SetGoal(coord.Item1, coord.Item2);
                 m_choosingGoal = false;
                 m_choosingStart = true;
             }
         }
 
-        private void Square_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Rectangle uiSquare = (Rectangle)sender;
-
-            if (m_drawingWalls)
-            {
-                //goal or start can't be a wall
-                if (Field.current.goal != Field.current.field[Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2] &&
-                    Field.current.start != Field.current.field[Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2])
-                {
-                    Field.current.SetWall(Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2);
-                    uiSquare.Fill = System.Windows.Media.Brushes.Black;
-                }
-            }
-        }
-
+        //drag/drop enter
         private void Square_DragEnter(object sender, DragEventArgs e)
         {
             Rectangle uiSquare = (Rectangle)sender;
+            var coord = Field.GetCoordinates(uiSquare.Name);
 
             if (m_drawingWalls && e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 //goal or start can't be a wall
-                if (Field.current.goal != Field.current.field[Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2] &&
-                    Field.current.start != Field.current.field[Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2])
+                if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                    Field.current.start != Field.current.field[coord.Item1, coord.Item2])
                 {
                     string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
 
@@ -150,20 +142,26 @@ namespace PathFindVisualizer
                         Brush wallColor = (Brush)converter.ConvertFromString(dataString);
                         uiSquare.Fill = wallColor;
                     }
-                    Field.current.SetWall(Field.GetCoordinates(uiSquare.Name).Item1,
-                    Field.GetCoordinates(uiSquare.Name).Item2);
+                    Field.current.SetWall(coord.Item1, coord.Item2);
                 }
             }
         }
 
+        //begin drag/drop
         private void Square_OnMouseMove(object sender, MouseEventArgs e)
         {
             if(m_drawingWalls)
             {
-                Rectangle square = sender as Rectangle;
+                Rectangle uiSquare = sender as Rectangle;
+                var coord = Field.GetCoordinates(uiSquare.Name);
+
                 if (e.LeftButton == MouseButtonState.Pressed)
                 {
-                    DragDrop.DoDragDrop(square, square.Fill.ToString(), DragDropEffects.Copy);
+                    if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                    Field.current.start != Field.current.field[coord.Item1, coord.Item2])
+                    {
+                        DragDrop.DoDragDrop(uiSquare, System.Windows.Media.Brushes.Black.ToString(), DragDropEffects.Copy);
+                    }
                 }
             }
         }
@@ -175,6 +173,8 @@ namespace PathFindVisualizer
                 MessageBox.Show("Select start and goal nodes!");
                 return;
             }
+
+            ResetBtn_Click(null, null);
             List<Square> path;
 
             try
@@ -214,7 +214,7 @@ namespace PathFindVisualizer
                 UpdateUI();
                 int Speed;
                 int.TryParse(App.Current.Properties["Speed"].ToString(), out Speed);
-                Thread.Sleep(50 * (Speed + 1));
+                Thread.Sleep(50 * Speed + 20);
             }
         }
 
@@ -263,6 +263,17 @@ namespace PathFindVisualizer
         private void SpeedSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             App.Current.Properties["Speed"] = SpeedSelect.SelectedIndex;
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //PopulateGrid();
+        }
+
+        private void PathGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            PopulateGrid();
+            //MessageBox.Show(PathGrid.ActualHeight.ToString() + ", " + PathGrid.ActualWidth.ToString());
         }
     }
 }

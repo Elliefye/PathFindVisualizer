@@ -49,7 +49,7 @@ namespace PathFindVisualizer
                 {
                     Application.Current.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => current.ColorChecked()));
                     int.TryParse(App.Current.Properties["Speed"].ToString(), out int Speed);
-                    await Task.Delay(50 * (Speed + 1));
+                    await Task.Delay(50 * Speed + 20);
                 }
             }
 

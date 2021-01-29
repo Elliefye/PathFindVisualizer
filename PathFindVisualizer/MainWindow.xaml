@@ -5,20 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PathFindVisualizer"
         mc:Ignorable="d"
-        Title="Path Finding Visualizer" Height="450" Width="800">
+        Title="Path Finding Visualizer" Height="450" Width="800" SizeChanged="Window_SizeChanged">
     <Grid>
-        <Grid x:Name="PathGrid" HorizontalAlignment="Left" Height="300" Margin="10,10,0,0" VerticalAlignment="Top" Width="300"/>
-        <Button x:Name="SubmitBtn" Content="Find path" HorizontalAlignment="Left" Margin="379,188,0,0" VerticalAlignment="Top" Width="75" Click="SubmitBtn_Click"/>
-        <Button x:Name="ClearBtn" Content="Clear" HorizontalAlignment="Left" Margin="380,242,0,0" VerticalAlignment="Top" Width="75" Click="ClearBtn_Click"/>
-        <CheckBox x:Name="WallsCheckBox" Content="Draw walls" HorizontalAlignment="Left" Margin="380,35,0,0" VerticalAlignment="Top" Checked="WallsCheckBox_Checked" Unchecked="WallsCheckBox_Checked"/>
-        <ComboBox x:Name="AlgSelect" HorizontalAlignment="Left" Margin="380,97,0,0" VerticalAlignment="Top" Width="166">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="25" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1" x:Name="PathGrid" Margin="10,10,10,10" SizeChanged="PathGrid_SizeChanged"/>
+        <Button x:Name="SubmitBtn" Content="Find path" HorizontalAlignment="Left" Margin="459.2,16,0,0" VerticalAlignment="Top" Width="75" Click="SubmitBtn_Click" Grid.Column="1"/>
+        <Button x:Name="ClearBtn" Content="Clear" HorizontalAlignment="Left" Margin="573.2,16,0,0" VerticalAlignment="Top" Width="75" Click="ClearBtn_Click" Grid.Column="1"/>
+        <CheckBox x:Name="WallsCheckBox" Content="Draw walls" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="WallsCheckBox_Checked" Unchecked="WallsCheckBox_Checked" Grid.Column="1" Margin="320.2,20,0,0"/>
+        <ComboBox x:Name="AlgSelect" HorizontalAlignment="Left" Margin="0.2,16,0,0" VerticalAlignment="Top" Width="166" Grid.Column="1">
             <ComboBoxItem Content="Breadth First Search" IsSelected="True"/>
             <ComboBoxItem Content="Dijkstra's Algorithm"/>
             <ComboBoxItem Content="Greedy Best First Search"/>
             <ComboBoxItem Content="A*"/>
         </ComboBox>
-        <Button x:Name="ResetBtn" Content="Reset" HorizontalAlignment="Left" Margin="492,242,0,0" VerticalAlignment="Top" Width="75" Click="ResetBtn_Click"/>
-        <ComboBox x:Name="SpeedSelect" HorizontalAlignment="Left" Margin="615,97,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="SpeedSelect_SelectionChanged">
+        <Button x:Name="ResetBtn" Content="Reset" HorizontalAlignment="Left" Margin="669.2,16,0,0" VerticalAlignment="Top" Width="75" Click="ResetBtn_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <ComboBox x:Name="SpeedSelect" HorizontalAlignment="Left" Margin="186.2,16,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="SpeedSelect_SelectionChanged" Grid.Column="1">
             <ComboBoxItem Content="Fastest"/>
             <ComboBoxItem Content="Fast"/>
             <ComboBoxItem Content="Medium"/>
