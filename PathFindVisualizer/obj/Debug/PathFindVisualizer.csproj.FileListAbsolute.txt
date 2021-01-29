@@ -13,3 +13,4 @@ D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualize
 D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.csproj.CoreCompileInputs.cache
 D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.exe
 D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\PathFindVisualizer.pdb
+D:\Eli\Code\C#\PathFindVisualizer\PathFindVisualizer\obj\Debug\App.baml

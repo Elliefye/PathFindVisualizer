@@ -5,34 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PathFindVisualizer"
         mc:Ignorable="d"
-        Title="Path Finding Visualizer" Height="450" Width="800" SizeChanged="Window_SizeChanged">
+        Title="Path Finding Visualizer" Height="450" Width="800" Background="#262833">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="40" />
             <RowDefinition />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="15" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="1" Grid.Column="1" x:Name="PathGrid" Margin="10,10,10,10" SizeChanged="PathGrid_SizeChanged"/>
-        <Button x:Name="SubmitBtn" Content="Find path" HorizontalAlignment="Left" Margin="459.2,16,0,0" VerticalAlignment="Top" Width="75" Click="SubmitBtn_Click" Grid.Column="1"/>
-        <Button x:Name="ClearBtn" Content="Clear" HorizontalAlignment="Left" Margin="573.2,16,0,0" VerticalAlignment="Top" Width="75" Click="ClearBtn_Click" Grid.Column="1"/>
-        <CheckBox x:Name="WallsCheckBox" Content="Draw walls" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="WallsCheckBox_Checked" Unchecked="WallsCheckBox_Checked" Grid.Column="1" Margin="320.2,20,0,0"/>
-        <ComboBox x:Name="AlgSelect" HorizontalAlignment="Left" Margin="0.2,16,0,0" VerticalAlignment="Top" Width="166" Grid.Column="1">
-            <ComboBoxItem Content="Breadth First Search" IsSelected="True"/>
-            <ComboBoxItem Content="Dijkstra's Algorithm"/>
-            <ComboBoxItem Content="Greedy Best First Search"/>
-            <ComboBoxItem Content="A*"/>
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="6" x:Name="PathGrid" Margin="0,10,0,0" SizeChanged="PathGrid_SizeChanged"/>
+        <Button Grid.Row="1" Grid.Column="4" x:Name="SubmitBtn" Content="Find path" Click="SubmitBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnMain}"/>
+        <Button Grid.Row="1" Grid.Column="6" x:Name="ClearBtn" Content="Clear"  Click="ClearBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnNotMain}"/>
+        <Button Grid.Row="1" Grid.Column="5" x:Name="ResetBtn" Content="Reset" Click="ResetBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnNotMain}"/>
+        <CheckBox Grid.Row="1" Grid.Column="3" x:Name="WallsCheckBox" Content="Draw walls" Checked="WallsCheckBox_Checked" Unchecked="WallsCheckBox_Checked" Margin="5,5,5,5" Style="{StaticResource CheckBoxMain}" VerticalContentAlignment="Top"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" x:Name="AlgSelect" SelectedIndex="0" Margin="5,5,5,5" Style="{DynamicResource ComboBoxMain}" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <ComboBoxItem Content="A*" Style="{DynamicResource ComboBoxItemMain}"/>
+            <ComboBoxItem Content="Dijkstra's Algorithm" Style="{DynamicResource ComboBoxItemMain}"/>
+            <ComboBoxItem Content="Greedy Best First Search" Style="{DynamicResource ComboBoxItemMain}"/>
+            <ComboBoxItem Content="Breadth First Search" Style="{DynamicResource ComboBoxItemMain}"/>
         </ComboBox>
-        <Button x:Name="ResetBtn" Content="Reset" HorizontalAlignment="Left" Margin="669.2,16,0,0" VerticalAlignment="Top" Width="75" Click="ResetBtn_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="SpeedSelect" HorizontalAlignment="Left" Margin="186.2,16,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="SpeedSelect_SelectionChanged" Grid.Column="1">
-            <ComboBoxItem Content="Fastest"/>
-            <ComboBoxItem Content="Fast"/>
-            <ComboBoxItem Content="Medium"/>
-            <ComboBoxItem Content="Slow"/>
+        <ComboBox Grid.Row="1" Grid.Column="2" x:Name="SpeedSelect" SelectedIndex="0" SelectionChanged="SpeedSelect_SelectionChanged" Margin="5,5,5,5" Style="{DynamicResource ComboBoxMain}" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <ComboBoxItem Content="Fastest" Style="{DynamicResource ComboBoxItemMain}"/>
+            <ComboBoxItem Content="Fast" Style="{DynamicResource ComboBoxItemMain}"/>
+            <ComboBoxItem Content="Medium" Style="{DynamicResource ComboBoxItemMain}"/>
+            <ComboBoxItem Content="Slow" Style="{DynamicResource ComboBoxItemMain}"/>
         </ComboBox>
     </Grid>
 </Window>

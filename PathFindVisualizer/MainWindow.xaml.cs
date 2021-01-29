@@ -182,7 +182,7 @@ namespace PathFindVisualizer
                 switch(AlgSelect.SelectedIndex)
                 {
                     case 0:
-                        path = await BFS.GetPath(Field.current);
+                        path = await AStar.GetPath(Field.current);
                         break;
                     case 1:
                         path = await Dijkstra.GetPath(Field.current);
@@ -191,16 +191,16 @@ namespace PathFindVisualizer
                         path = await GreedyBFS.GetPath(Field.current);
                         break;
                     case 3:
-                        path = await AStar.GetPath(Field.current);
+                        path = await BFS.GetPath(Field.current);
                         break;
                     default:
                         MessageBox.Show("Error selecting algorithm.");
                         return;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Path could not be found.");
+                MessageBox.Show("Path could not be found: " + ex.Message);
                 return;
             }
 
@@ -265,15 +265,9 @@ namespace PathFindVisualizer
             App.Current.Properties["Speed"] = SpeedSelect.SelectedIndex;
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //PopulateGrid();
-        }
-
         private void PathGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             PopulateGrid();
-            //MessageBox.Show(PathGrid.ActualHeight.ToString() + ", " + PathGrid.ActualWidth.ToString());
         }
     }
 }
