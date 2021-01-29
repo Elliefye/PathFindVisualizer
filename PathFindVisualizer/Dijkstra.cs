@@ -31,16 +31,23 @@ namespace PathFindVisualizer
 
                 for (int i = 0; i < current.neighbors.Count; i++)
                 {
-                    int newCost = CostSoFar[current] + current.neighbors[i].weight;
-                    if (current.neighbors[i].isWall)
+                    Square next = current.neighbors[i];
+                    int newCost = CostSoFar[current] + next.weight;
+                    if (next.isWall)
                     {
                         continue;
                     }
-                    else if(!CostSoFar.ContainsKey(current.neighbors[i]) || newCost < CostSoFar[current.neighbors[i]])
+                    else if (next == field.goal)
                     {
-                        CostSoFar[current.neighbors[i]] = newCost;
-                        ToCheck.Enqueue(current.neighbors[i], newCost);
-                        PreviousMoves.Add(current.neighbors[i], current);
+                        ToCheck.Enqueue(next, 0); //high priority for goal
+                        if (!PreviousMoves.ContainsKey(next))
+                            PreviousMoves.Add(next, current);
+                    }
+                    else if(!CostSoFar.ContainsKey(next) || newCost < CostSoFar[next])
+                    {
+                        CostSoFar[next] = newCost;
+                        ToCheck.Enqueue(next, newCost);
+                        PreviousMoves.Add(next, current);
                     }
                 }
                 if (current != field.start) //color visited squares

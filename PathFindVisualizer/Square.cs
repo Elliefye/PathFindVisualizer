@@ -65,7 +65,7 @@ namespace PathFindVisualizer
 
         public override string ToString()
         {
-            return "Cube with coordinates: (" + x + ", " + y + ") and weight " + weight;
+            return "Square: (" + x + ", " + y + ")";
         }
 
         public int CompareTo(Square other)

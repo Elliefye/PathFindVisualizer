@@ -29,15 +29,16 @@ namespace PathFindVisualizer
 
                 for (int i = 0; i < current.neighbors.Count; i++)
                 {
-                    if (current.neighbors[i].isWall)
+                    Square next = current.neighbors[i];
+                    if (next.isWall)
                     {
                         continue;
                     }
-                    else if (!PreviousMoves.ContainsKey(current.neighbors[i]))
+                    else if (!PreviousMoves.ContainsKey(next))
                     {
-                        int distance = Field.MeasureDistance(field.goal, current.neighbors[i]);
-                        ToCheck.Enqueue(current.neighbors[i], distance);
-                        PreviousMoves.Add(current.neighbors[i], current);
+                        int distance = Field.MeasureDistance(field.goal, next);
+                        ToCheck.Enqueue(next, distance);
+                        PreviousMoves.Add(next, current);
                     }
                 }
                 if (current != field.start) //color visited squares

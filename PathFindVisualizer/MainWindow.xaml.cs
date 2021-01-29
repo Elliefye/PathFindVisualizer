@@ -176,6 +176,7 @@ namespace PathFindVisualizer
 
             ResetBtn_Click(null, null);
             List<Square> path;
+            //path = AStar.GetPathSync(Field.current);
 
             try
             {
@@ -250,6 +251,7 @@ namespace PathFindVisualizer
 
         private void ResetBtn_Click(object sender, RoutedEventArgs e)
         {
+            WallsCheckBox.IsChecked = false;
             foreach (object child in PathGrid.Children)
             {
                 Rectangle rect = (Rectangle)child;
