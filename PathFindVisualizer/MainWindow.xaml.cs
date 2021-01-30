@@ -26,6 +26,7 @@ namespace PathFindVisualizer
         private bool m_choosingStart = true;
         private bool m_choosingGoal = false;
         private bool m_drawingWalls = false;
+        private bool m_drawingWeights = false;
 
         public MainWindow()
         {
@@ -37,7 +38,7 @@ namespace PathFindVisualizer
         private void PopulateGrid()
         {
             int RowNo = 10;
-            int ColNo = 23;
+            int ColNo = 25;
 
             if (PathGrid.ActualWidth != 0 && PathGrid.Width != 0)
             {
@@ -107,6 +108,16 @@ namespace PathFindVisualizer
                     uiSquare.Fill = System.Windows.Media.Brushes.Black;
                 }
             }
+            else if(m_drawingWeights)
+            {
+                if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                    Field.current.start != Field.current.field[coord.Item1, coord.Item2] &&
+                    !Field.current.field[coord.Item1, coord.Item2].isWall)
+                {
+                    Field.current.SetWeight(coord.Item1, coord.Item2);
+                    uiSquare.Fill = System.Windows.Media.Brushes.DarkBlue;
+                }
+            }
             else if(m_choosingStart)
             {
                 Field.current.SetStart(coord.Item1, coord.Item2);
@@ -127,9 +138,9 @@ namespace PathFindVisualizer
             Rectangle uiSquare = (Rectangle)sender;
             var coord = Field.GetCoordinates(uiSquare.Name);
 
-            if (m_drawingWalls && e.Data.GetDataPresent(DataFormats.StringFormat))
+            if ((m_drawingWalls  || m_drawingWeights) && e.Data.GetDataPresent(DataFormats.StringFormat))
             {
-                //goal or start can't be a wall
+                //goal or start can't be a wall or weight
                 if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
                     Field.current.start != Field.current.field[coord.Item1, coord.Item2])
                 {
@@ -140,9 +151,18 @@ namespace PathFindVisualizer
                     if (converter.IsValid(dataString))
                     {
                         Brush wallColor = (Brush)converter.ConvertFromString(dataString);
-                        uiSquare.Fill = wallColor;
+                        if(m_drawingWalls)
+                        {
+                            uiSquare.Fill = wallColor;
+                            Field.current.SetWall(coord.Item1, coord.Item2);
+                        }
+                        //walls have higher priority than weights
+                        else if(!Field.current.field[coord.Item1, coord.Item2].isWall)
+                        {
+                            uiSquare.Fill = wallColor;
+                            Field.current.SetWeight(coord.Item1, coord.Item2);
+                        }
                     }
-                    Field.current.SetWall(coord.Item1, coord.Item2);
                 }
             }
         }
@@ -150,17 +170,21 @@ namespace PathFindVisualizer
         //begin drag/drop
         private void Square_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if(m_drawingWalls)
-            {
-                Rectangle uiSquare = sender as Rectangle;
-                var coord = Field.GetCoordinates(uiSquare.Name);
+            Rectangle uiSquare = sender as Rectangle;
+            var coord = Field.GetCoordinates(uiSquare.Name);
 
-                if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                Field.current.start != Field.current.field[coord.Item1, coord.Item2])
                 {
-                    if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
-                    Field.current.start != Field.current.field[coord.Item1, coord.Item2])
+                    if (m_drawingWalls)
                     {
                         DragDrop.DoDragDrop(uiSquare, System.Windows.Media.Brushes.Black.ToString(), DragDropEffects.Copy);
+                    }
+                    else if (m_drawingWeights && !Field.current.field[coord.Item1, coord.Item2].isWall)
+                    {
+                        DragDrop.DoDragDrop(uiSquare, System.Windows.Media.Brushes.DarkBlue.ToString(), DragDropEffects.Copy);
                     }
                 }
             }
@@ -176,7 +200,6 @@ namespace PathFindVisualizer
 
             ResetBtn_Click(null, null);
             List<Square> path;
-            //path = AStar.GetPathSync(Field.current);
 
             try
             {
@@ -199,9 +222,14 @@ namespace PathFindVisualizer
                         return;
                 }
             }
+            catch (KeyNotFoundException ex)
+            {
+                MessageBox.Show("Path could not be found.");
+                return;
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Path could not be found: " + ex.Message);
+                MessageBox.Show("Error finding path: " + ex.Message);
                 return;
             }
 
@@ -233,7 +261,14 @@ namespace PathFindVisualizer
 
         private void WallsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+            WeightsCheckBox.IsChecked = false;
             m_drawingWalls = !m_drawingWalls;
+        }
+
+        private void WeightsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            WallsCheckBox.IsChecked = false;
+            m_drawingWeights = !m_drawingWeights;
         }
 
         private void UpdateUI()
@@ -257,8 +292,14 @@ namespace PathFindVisualizer
                 Rectangle rect = (Rectangle)child;
                 Square current = Field.current.field[Field.GetCoordinates(rect.Name).Item1, Field.GetCoordinates(rect.Name).Item2];
 
-                if(current != Field.current.start && current != Field.current.goal && !current.isWall)
+                if (current != Field.current.start && current != Field.current.goal && !current.isWall && current.weight == 1)
+                {
                     rect.Fill = System.Windows.Media.Brushes.Gray;
+                }
+                else if (current.weight > 1)
+                {
+                    rect.Fill = System.Windows.Media.Brushes.DarkBlue;
+                }
             }
         }
 

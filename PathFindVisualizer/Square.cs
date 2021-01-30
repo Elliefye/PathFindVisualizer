@@ -50,7 +50,14 @@ namespace PathFindVisualizer
         {
             //Action a = () => uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
             //Dispatcher.Invoke(a);
-            uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
+            if(weight == 1)
+            {
+                uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
+            }
+            else
+            {
+                uiRef.Fill = System.Windows.Media.Brushes.LightSkyBlue;
+            }    
         }
 
         public void ColorPath()

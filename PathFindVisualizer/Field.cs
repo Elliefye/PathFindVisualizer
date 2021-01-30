@@ -43,6 +43,11 @@ namespace PathFindVisualizer
             field[x, y].isWall = true;
         }
 
+        public void SetWeight(int x, int y, int weight = 10)
+        {
+            field[x, y].weight = weight;
+        }
+
         public void ClearWalls()
         {
             for (int i = 0; i < field.GetLength(0); i++)
