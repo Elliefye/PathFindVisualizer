@@ -40,14 +40,13 @@ namespace PathFindVisualizer
                     else if (next == field.goal)
                     {
                         ToCheck.Enqueue(next, 0); //high priority for goal
-                        if (!PreviousMoves.ContainsKey(next))
-                            PreviousMoves.Add(next, current);
+                        PreviousMoves[next] = current;
                     }
                     else if(!CostSoFar.ContainsKey(next) || newCost < CostSoFar[next])
                     {
                         CostSoFar[next] = newCost;
                         ToCheck.Enqueue(next, newCost);
-                        PreviousMoves.Add(next, current);
+                        PreviousMoves[next] = current;
                     }
                 }
                 if (current != field.start) //color visited squares

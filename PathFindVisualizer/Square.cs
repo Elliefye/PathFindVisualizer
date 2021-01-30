@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -16,7 +17,7 @@ namespace PathFindVisualizer
         public int y { get; set; }
         public bool isWall = false;
         public int weight = 1;
-        private Rectangle uiRef;
+        private readonly Rectangle uiRef;
         public List<Square> neighbors = new List<Square>();
 
         public Square(Rectangle uiRef)
@@ -33,41 +34,51 @@ namespace PathFindVisualizer
 
         public void ResetColor()
         {
-            uiRef.Fill = System.Windows.Media.Brushes.Gray;
+            uiRef.Fill = App.Sdefault;
         }
 
         public void ColorStart()
         {
-            uiRef.Fill = System.Windows.Media.Brushes.Red;
+            uiRef.Fill = App.Sstart;
         }
 
         public void ColorGoal()
         {
-            uiRef.Fill = System.Windows.Media.Brushes.Blue;
+            uiRef.Fill = App.Sgoal;
         }
 
         public void ColorChecked()
         {
-            //Action a = () => uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
-            //Dispatcher.Invoke(a);
             if(weight == 1)
             {
-                uiRef.Fill = System.Windows.Media.Brushes.DarkGray;
+                uiRef.Fill = App.SdefaultVisited;
             }
             else
             {
-                uiRef.Fill = System.Windows.Media.Brushes.LightSkyBlue;
+                uiRef.Fill = App.SweightVisited;
             }    
         }
 
         public void ColorPath()
         {
-            uiRef.Fill = System.Windows.Media.Brushes.Lavender;
+            if (weight == 1)
+            {
+                uiRef.Fill = App.SdefaultPath;
+            }
+            else
+            {
+                uiRef.Fill = App.SweightPath;
+            }
         }
 
         public void ColorWall()
         {
-            uiRef.Fill = System.Windows.Media.Brushes.Black;
+            uiRef.Fill = App.Swall;
+        }
+
+        public void ColorWeight()
+        {
+            uiRef.Fill = App.Sweight;
         }
 
         public override string ToString()

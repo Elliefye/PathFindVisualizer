@@ -34,7 +34,7 @@ namespace PathFindVisualizer
 
             foreach(var item in data)
             {
-                if(item.Value < bestPriority)
+                if(item.Value <= bestPriority)
                 {
                     bestItem = item.Key;
                     bestPriority = item.Value;

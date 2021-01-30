@@ -38,14 +38,26 @@ namespace PathFindVisualizer
             goal.ColorGoal();
         }
 
-        public void SetWall(int x, int y)
+        public void SetWall(int x, int y, bool set = true)
         {
-            field[x, y].isWall = true;
+            field[x, y].isWall = set;
+            if(set)
+            {
+                field[x, y].weight = 1;
+                field[x, y].ColorWall();
+            }
+            else field[x, y].ResetColor();
         }
 
         public void SetWeight(int x, int y, int weight = 10)
         {
             field[x, y].weight = weight;
+
+            if (weight > 1)
+            {
+                field[x, y].ColorWeight();
+            }
+            else field[x, y].ResetColor();
         }
 
         public void ClearWalls()

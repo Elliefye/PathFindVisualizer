@@ -81,7 +81,7 @@ namespace PathFindVisualizer
                     square.AllowDrop = true;
                     Grid.SetRow(square, j);
                     Grid.SetColumn(square, k);
-                    square.Fill = System.Windows.Media.Brushes.Gray;
+                    square.Fill = App.Sdefault;
                     square.MouseLeftButtonUp += new MouseButtonEventHandler((s, e) => Square_OnMouseLeftButtonUp(s, e));
                     square.MouseMove += new MouseEventHandler((s, e) => Square_OnMouseMove(s, e));
                     square.DragEnter += new DragEventHandler((s, e) => Square_DragEnter(s, e));
@@ -100,22 +100,29 @@ namespace PathFindVisualizer
 
             if (m_drawingWalls)
             {
+                if (Field.current.field[coord.Item1, coord.Item2].isWall)
+                {
+                    Field.current.SetWall(coord.Item1, coord.Item2, false);
+                }
                 //goal or start can't be a wall
-                if(Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                else if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] && 
                     Field.current.start != Field.current.field[coord.Item1, coord.Item2])
                 {
                     Field.current.SetWall(coord.Item1, coord.Item2);
-                    uiSquare.Fill = System.Windows.Media.Brushes.Black;
                 }
             }
             else if(m_drawingWeights)
             {
-                if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+                //if already a weight, reset
+                if (Field.current.field[coord.Item1, coord.Item2].weight > 1)
+                {
+                    Field.current.SetWeight(coord.Item1, coord.Item2, 1);
+                }
+                else if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
                     Field.current.start != Field.current.field[coord.Item1, coord.Item2] &&
                     !Field.current.field[coord.Item1, coord.Item2].isWall)
                 {
                     Field.current.SetWeight(coord.Item1, coord.Item2);
-                    uiSquare.Fill = System.Windows.Media.Brushes.DarkBlue;
                 }
             }
             else if(m_choosingStart)
@@ -138,31 +145,25 @@ namespace PathFindVisualizer
             Rectangle uiSquare = (Rectangle)sender;
             var coord = Field.GetCoordinates(uiSquare.Name);
 
-            if ((m_drawingWalls  || m_drawingWeights) && e.Data.GetDataPresent(DataFormats.StringFormat))
-            {
-                //goal or start can't be a wall or weight
-                if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
+            if (Field.current.goal != Field.current.field[coord.Item1, coord.Item2] &&
                     Field.current.start != Field.current.field[coord.Item1, coord.Item2])
+            {
+                if (m_drawingWalls)
                 {
-                    string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
-
-                    // If the string can be converted into a Brush, convert it.
-                    BrushConverter converter = new BrushConverter();
-                    if (converter.IsValid(dataString))
+                    if(!Field.current.field[coord.Item1, coord.Item2].isWall)
                     {
-                        Brush wallColor = (Brush)converter.ConvertFromString(dataString);
-                        if(m_drawingWalls)
-                        {
-                            uiSquare.Fill = wallColor;
-                            Field.current.SetWall(coord.Item1, coord.Item2);
-                        }
-                        //walls have higher priority than weights
-                        else if(!Field.current.field[coord.Item1, coord.Item2].isWall)
-                        {
-                            uiSquare.Fill = wallColor;
-                            Field.current.SetWeight(coord.Item1, coord.Item2);
-                        }
+                        Field.current.SetWall(coord.Item1, coord.Item2);
                     }
+                    else Field.current.SetWall(coord.Item1, coord.Item2, false);
+                }
+                //walls have higher priority than weights
+                else if (!Field.current.field[coord.Item1, coord.Item2].isWall && m_drawingWeights)
+                {
+                    if(Field.current.field[coord.Item1, coord.Item2].weight == 1)
+                    {
+                        Field.current.SetWeight(coord.Item1, coord.Item2);
+                    }
+                    else Field.current.SetWeight(coord.Item1, coord.Item2, 1);
                 }
             }
         }
@@ -180,11 +181,11 @@ namespace PathFindVisualizer
                 {
                     if (m_drawingWalls)
                     {
-                        DragDrop.DoDragDrop(uiSquare, System.Windows.Media.Brushes.Black.ToString(), DragDropEffects.Copy);
+                        DragDrop.DoDragDrop(uiSquare, "", DragDropEffects.Copy);
                     }
                     else if (m_drawingWeights && !Field.current.field[coord.Item1, coord.Item2].isWall)
                     {
-                        DragDrop.DoDragDrop(uiSquare, System.Windows.Media.Brushes.DarkBlue.ToString(), DragDropEffects.Copy);
+                        DragDrop.DoDragDrop(uiSquare, "", DragDropEffects.Copy);
                     }
                 }
             }
@@ -222,7 +223,7 @@ namespace PathFindVisualizer
                         return;
                 }
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 MessageBox.Show("Path could not be found.");
                 return;
@@ -241,8 +242,7 @@ namespace PathFindVisualizer
                 }
                 else path[i].ColorPath();
                 UpdateUI();
-                int Speed;
-                int.TryParse(App.Current.Properties["Speed"].ToString(), out Speed);
+                int.TryParse(App.Current.Properties["Speed"].ToString(), out int Speed);
                 Thread.Sleep(50 * Speed + 20);
             }
         }
@@ -255,7 +255,7 @@ namespace PathFindVisualizer
             foreach(object child in PathGrid.Children)
             {
                 Rectangle rect = (Rectangle)child;
-                rect.Fill = System.Windows.Media.Brushes.Gray;
+                rect.Fill = App.Sdefault;
             }
         }
 
@@ -294,11 +294,15 @@ namespace PathFindVisualizer
 
                 if (current != Field.current.start && current != Field.current.goal && !current.isWall && current.weight == 1)
                 {
-                    rect.Fill = System.Windows.Media.Brushes.Gray;
+                    current.ResetColor();
                 }
                 else if (current.weight > 1)
                 {
-                    rect.Fill = System.Windows.Media.Brushes.DarkBlue;
+                    current.ColorWeight();
+                }
+                else if (current.isWall)
+                {
+                    current.ColorWall();
                 }
             }
         }
