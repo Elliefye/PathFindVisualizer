@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PathFindVisualizer"
         mc:Ignorable="d"
-        Title="Path Finding Visualizer" Height="450" Width="900" Background="#262833" MinHeight="200" MinWidth="500">
+        Title="Path Finding Visualizer" Height="450" Width="900" Background="#262833" MinHeight="200" MinWidth="500" TextOptions.TextFormattingMode="Display">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
