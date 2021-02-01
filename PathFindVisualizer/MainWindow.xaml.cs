@@ -32,7 +32,6 @@ namespace PathFindVisualizer
         {
             InitializeComponent();
             App.Current.Properties["Speed"] = 0;
-            PopulateGrid();
         }
 
         private void PopulateGrid()

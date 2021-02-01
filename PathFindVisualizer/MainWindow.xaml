@@ -11,11 +11,13 @@
             <RowDefinition Height="10" />
             <RowDefinition Height="40" />
             <RowDefinition />
+            <RowDefinition Height="40"/>
             <RowDefinition Height="15" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15" />
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
@@ -24,23 +26,51 @@
             <ColumnDefinition />
             <ColumnDefinition Width="15" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="7" x:Name="PathGrid" Margin="0,10,0,0" SizeChanged="PathGrid_SizeChanged"/>
-        <Button Grid.Row="1" Grid.Column="5" x:Name="SubmitBtn" Content="Find path" Click="SubmitBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnMain}"/>
-        <Button Grid.Row="1" Grid.Column="7" x:Name="ClearBtn" Content="Clear board"  Click="ClearBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnNotMain}"/>
-        <Button Grid.Row="1" Grid.Column="6" x:Name="ResetBtn" Content="Clear path" Click="ResetBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnNotMain}"/>
-        <CheckBox Grid.Row="1" Grid.Column="3" x:Name="WallsCheckBox" Content="Draw walls" Checked="WallsCheckBox_Checked" Unchecked="WallsCheckBox_Checked" Margin="5,5,5,5" Style="{StaticResource CheckBoxMain}" VerticalContentAlignment="Top"/>
-        <CheckBox Grid.Row="1" Grid.Column="4" x:Name="WeightsCheckBox" Content="Draw weights" Checked="WeightsCheckBox_Checked" Unchecked="WeightsCheckBox_Checked" Margin="5,5,5,5" Style="{StaticResource CheckBoxMain}" VerticalContentAlignment="Top"/>
-        <ComboBox Grid.Row="1" Grid.Column="1" x:Name="AlgSelect" SelectedIndex="0" Margin="5,5,5,5" Style="{DynamicResource ComboBoxMain}" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="8" x:Name="PathGrid" Margin="0,10,0,0" SizeChanged="PathGrid_SizeChanged"/>
+        <Button Grid.Row="1" Grid.Column="6" x:Name="SubmitBtn" Content="Find path" Click="SubmitBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnMain}"/>
+        <Button Grid.Row="1" Grid.Column="8" x:Name="ClearBtn" Content="Clear board"  Click="ClearBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnNotMain}"/>
+        <Button Grid.Row="1" Grid.Column="7" x:Name="ResetBtn" Content="Clear path" Click="ResetBtn_Click" Margin="5,5,5,5" Style="{StaticResource BtnNotMain}"/>
+        <CheckBox Grid.Row="1" Grid.Column="4" x:Name="WallsCheckBox" Content="Draw walls" Checked="WallsCheckBox_Checked" Unchecked="WallsCheckBox_Checked" Margin="5,5,5,5" Style="{StaticResource CheckBoxMain}" VerticalContentAlignment="Top"/>
+        <CheckBox Grid.Row="1" Grid.Column="5" x:Name="WeightsCheckBox" Content="Draw weights" Checked="WeightsCheckBox_Checked" Unchecked="WeightsCheckBox_Checked" Margin="5,5,5,5" Style="{StaticResource CheckBoxMain}" VerticalContentAlignment="Top"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="AlgSelect" SelectedIndex="0" Margin="5,5,5,5" Style="{DynamicResource ComboBoxMain}" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <ComboBoxItem Content="A*" Style="{DynamicResource ComboBoxItemMain}"/>
             <ComboBoxItem Content="Dijkstra's Algorithm" Style="{DynamicResource ComboBoxItemMain}"/>
             <ComboBoxItem Content="Greedy Best First Search" Style="{DynamicResource ComboBoxItemMain}"/>
             <ComboBoxItem Content="Breadth First Search" Style="{DynamicResource ComboBoxItemMain}"/>
         </ComboBox>
-        <ComboBox Grid.Row="1" Grid.Column="2" x:Name="SpeedSelect" SelectedIndex="0" SelectionChanged="SpeedSelect_SelectionChanged" Margin="5,5,5,5" Style="{DynamicResource ComboBoxMain}" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        <ComboBox Grid.Row="1" Grid.Column="3" x:Name="SpeedSelect" SelectedIndex="0" SelectionChanged="SpeedSelect_SelectionChanged" Margin="5,5,5,5" Style="{DynamicResource ComboBoxMain}" Foreground="White" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <ComboBoxItem Content="Fastest" Style="{DynamicResource ComboBoxItemMain}"/>
             <ComboBoxItem Content="Fast" Style="{DynamicResource ComboBoxItemMain}"/>
             <ComboBoxItem Content="Medium" Style="{DynamicResource ComboBoxItemMain}"/>
             <ComboBoxItem Content="Slow" Style="{DynamicResource ComboBoxItemMain}"/>
         </ComboBox>
+        <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1.1*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Rectangle Grid.Column="0" Fill="Red" Stroke="Red" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Start node" Grid.Column="0" Style="{DynamicResource LabelMain}"/>
+            <Rectangle Grid.Column="1" Fill="Green" Stroke="Green" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Goal node" Grid.Column="1" Style="{DynamicResource LabelMain}"/>
+            <Rectangle Grid.Column="2" Fill="Gray" Stroke="Gray" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Unvisited node" Grid.Column="2" Style="{DynamicResource LabelMain}"/>
+            <Rectangle Grid.Column="3" Fill="#505050" Stroke="#505050" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Visited node" Grid.Column="3" Style="{DynamicResource LabelMain}"/>
+            <Rectangle Grid.Column="4" Fill="DarkBlue" Stroke="DarkBlue" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Unvisited weight" Grid.Column="4" Style="{DynamicResource LabelMain}"/>
+            <Rectangle Grid.Column="5" Fill="LightSkyBlue" Stroke="LightSkyBlue" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Visited weight" Grid.Column="5" Style="{DynamicResource LabelMain}"/>
+            <Rectangle Grid.Column="6" Fill="Black" Stroke="Black" Style="{DynamicResource LegendSquare}"/>
+            <Label Content="Wall" Grid.Column="6" Style="{DynamicResource LabelMain}"/>
+        </Grid>
     </Grid>
 </Window>

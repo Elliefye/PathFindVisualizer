@@ -19,7 +19,7 @@ namespace PathFindVisualizer
         public static readonly Brush Sweight = System.Windows.Media.Brushes.DarkBlue;
         public static readonly Brush Sgoal = System.Windows.Media.Brushes.Green;
         public static readonly Brush Sstart = System.Windows.Media.Brushes.Red;
-        public static readonly Brush SdefaultVisited = System.Windows.Media.Brushes.DarkGray;
+        public static readonly Brush SdefaultVisited = new SolidColorBrush(Color.FromRgb(50, 50, 50)); //System.Windows.Media.Brushes.DarkGray;
         public static readonly Brush SweightVisited = System.Windows.Media.Brushes.LightSkyBlue;
         public static readonly Brush SdefaultPath = System.Windows.Media.Brushes.White;
         public static readonly Brush SweightPath = System.Windows.Media.Brushes.White;
