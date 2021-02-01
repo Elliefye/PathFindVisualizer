@@ -260,13 +260,19 @@ namespace PathFindVisualizer
 
         private void WallsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            WeightsCheckBox.IsChecked = false;
+            if(!m_drawingWalls)
+            {
+                WeightsCheckBox.IsChecked = false;
+            }
             m_drawingWalls = !m_drawingWalls;
         }
 
         private void WeightsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            WallsCheckBox.IsChecked = false;
+            if (!m_drawingWeights)
+            {
+                WallsCheckBox.IsChecked = false;
+            }
             m_drawingWeights = !m_drawingWeights;
         }
 
